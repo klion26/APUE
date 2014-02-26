@@ -1,2 +1,5 @@
 #ignore executable file
-.out
+*.out
+*.o
+#ignore this file
+.gitignore
