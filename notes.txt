@@ -1,0 +1,54 @@
+3 文件 I/O
+	不带缓冲的IO：open，read，write，lseek，close
+4. 文件和目录
+	4.2 stat, fstat and lstat返回文件有关信息
+	4.4 设置用户ID和设置组ID
+		实际用户ID和实际组ID标识我们究竟是谁
+		有效用户ID，有效组ID以及附加组ID决定了我们的文件访问权限。
+		保存的设置用户ID和保存的设置组ID在执行一个程序时包含了有效用户ID和有效组ID的副本。
+	4.6 新文件和目录的所有权
+		新文件的用户ID设置为进程的有效用户ID
+		组ID可以时进程的有效组ID，可以时它所在目录的组ID
+	4.7 access 函数
+		按照实际用户ID和组ID进行访问权限测试
+		int access(const char* pathname, int mode); mode={R_OK, W_OK, X_OK, F_OK[测试文件是否存在]}, 成功返回0,出错返回-1
+	4.8 umask
+	4.9 chmod && fchmod
+		更改现有文件的访问权限, chmod函数在指定的文件上进行操作，fchmod函数则对已打开的文件进行操作。
+	4.10 粘住位
+		如果对一个目录设置了粘住位，则只有对该目录具有写权限的用户在满足下列条件之一的情况下，才能删除或更名该目录下的文件：
+			拥有此文件
+			拥有此目录
+			超级用户
+	4.11 chown, fchown && lchown
+	4.12 文件长度
+		stat 结构成员st_size表示以字节为单位的文件长度。此字段只对普通文件，目录文件和符号链接有意义。
+	4.13 文件截短
+		truncate(const char* pathname, off_t length);
+		ftruncate(int filedes, off_t length);将现有的文件长度截短为length字节，如果该文件以前的长度大于length，则超过length以外的数据就不再能访问，如果以前的长度短于length，则其效果与系统有关。遵循XSI的系统将增加该文件的长度。
+	4.14 文件系统
+	4.15 link, unlink, remove and rename
+		unlink可以用来删除一个已有项
+	4.16 符号链接
+		考虑命令是否跟随符号链接[使用的是符号链接本身，还是符号链接所指向的文件]
+		使用符号链接可能在文件系统中引入循环[目录A里面有一个指向A的符号链接]
+	4.17 symlink && readlink
+		symlink创建一个符号链接, readlink读取链接中的名字
+	4.18 文件的时间
+		修改时间：文件被修改的最后时间
+		更改状态时间：该文件的i节点最后一次被修改的时间
+	4.19 utime
+		访问和修改时间可以用utime函数更改
+	4.20 mkdir && rmdir
+	4.21 读目录
+		DIR* opendir(const char* pathname);
+		struct dirent* readdir(DIR* dp);
+		void rewinddir(DIR* dp);
+		int closedir(DIR* dp);
+		long telldir(DIR* dp);
+		void seekdir(DIR* dp, long loc);
+	4.22 chdir, fchdir, getcwd
+	4.23 设备特殊文件
+	4.24 文件访问权限位小结
+	4.25 小结
+		本章内容围绕stat函数，详细介绍了stat结构中的每一个成员。这使我们对UNIX文件的各个属性都有所了解。对文件的所有属性以及操作文件的所有函数有完整的了解对UNIX编程是非常重要的。
