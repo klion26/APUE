@@ -52,3 +52,64 @@
 	4.24 文件访问权限位小结
 	4.25 小结
 		本章内容围绕stat函数，详细介绍了stat结构中的每一个成员。这使我们对UNIX文件的各个属性都有所了解。对文件的所有属性以及操作文件的所有函数有完整的了解对UNIX编程是非常重要的。
+5 标准I/O库
+	5.2 流和FILE对象
+		对于标准I/O库，所有I/O函数的操作都是围绕流(stream)进行的。
+		freopen函数清除一个流的定向，fwide函数设置流的定向
+	5.3 标准输入，标准输出和标准出错
+	5.4 缓冲
+		标准I/O提供三种缓冲：
+			全缓冲：在填满标准I/O缓冲区后才进行实际I/O操作
+			行缓冲：当输入和输出中遇到换行符时
+				行缓冲有两个限制：
+					一，因为标准I/O库用来收集每一行的缓冲区长度是固定的，所以只要填满流缓冲区，那么即使还没有写一个换行符，也进行I/O操作。
+					二，任何时候只要通过标准I/O库要求从(a)一个不带缓冲的流，或者(b)一个行缓冲的流（它要求从内核得到数据）得到输入数据，那么就会造成冲洗所有行缓冲区输出流。
+			不带缓冲
+		setbuf/setvbuf两个函数给指定的流设置指定的缓冲类型
+		任何时候都可以用fflush强制冲洗一个流
+	5.5 打开流
+		FILE* fopen(const char* restrict pathname, const char* restrict type);     打开指定文件
+		FILE* freopen(const char* restrict pathname, const char* restrict type);   在一个指定的流上打开一个指定的文件
+		FILE* fdopen(int filedes, const char* type);  获取一个现有的文件描述符
+	5.6 读和写流
+		int getc(FILE* fp)
+		int fgetc(FILE* fp)
+		int getchar(void);  <= int getc(stdin)
+		int ferror(FILE* fp);
+		int feof(FILE* fp);
+		void clearerr(FILE* fp);
+		int ungetc(int c, FILE* fp); //从流中读取数据以后，可以调用ungetc将字符再压送会流中
+		int putc(int c, FILE* fp);
+		int fputc(int c, FILE* fp);
+		int putchar(int c);  ==> int putc(int c, stdout);
+	5.7 每次一行I/O
+		char* fgets(char* restrict buf, int n, FILE* restrict fp);
+		char* gets(char* buf);
+		int fputs(const char* restrict str, FILE* restrict fp);
+		int puts(const char* str);
+	5.8 标准I/O的效率
+	5.9 二进制I/O
+		size_t fread(void* restrict ptr, size_t size, size_t nobj, FILE* restrict fp);
+		size_t fwrite(const void* restrict ptr, size_t size, size_t nobj, FILE *restrict fp);
+		if(fwrite(&data[2], sizeof(float), 4, fp) != 4)
+			err_sys("fwrite error");
+	5.10 定位流
+		ftell && fseek
+		ftello && fseeko
+		fgetpos && fsetpos
+	5.11 格式化I/O
+		int printf(const char* restrict format, ...)
+		int fprintf(FILE* restrict fp, const char* restrict format, ...);
+		int sprintf(char* restrict buf, const char* restrict format, ...);
+		int snprintf(char* restrict buf, size_t n, const char* restrict format, ...)
+		int scanf(const char* restrict format, ...)
+		int fscanf(FILE* restrict fp, const char* restrict format, ...);
+		int sscanf(const char* restrict buf, const char* restrict format, ...);
+	5.12 实现细节
+	5.13 临时文件
+		char* tmpnam(char* ptr);
+		FILE* tmpfile(void);
+		char* tempnam(const char* directory, const char* prefix);
+		int mkstemp(char* template);
+	5.14 标准I/O的替代软件
+		sfio
