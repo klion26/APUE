@@ -113,3 +113,31 @@
 		int mkstemp(char* template);
 	5.14 标准I/O的替代软件
 		sfio
+6 系统数据文件和信息
+	6.2 口令文件
+		struct passwd* getpwuid(uid_t uid);
+		struct passwd* getpwnam(const char* name);
+		struct passwd* getpwent(void);  返回口令文件中的下一个记录项
+		void setpwent(void);
+		void endpwent(void);
+	6.3 阴影口令
+		struct spwd* getspnam(const char* name);
+		struct spwd* getspent(void);
+		void setspent(void);
+		void endspent(void);
+	6.4 组文件
+	6.5 附加组ID
+		int getgroups(int gidsetsize, gid_t grouplist[]);
+	6.6 实现的区别
+	6.7 其他数据文件
+		一般情况，对于每个数据文件至少有三个函数：
+			get函数：读下一个记录，如果需要，还可打开该文件
+			set函数：打开相应数据文件（如果尚未打开），然后反绕该文件
+			end函数：关闭相应数据文件
+	6.8 登陆账户记录
+	6.9 系统标识
+		int uname(struct utsname* uname);
+	6.10 时间和日期例程
+		time_t time(time_t *calptr);
+		int gettimeofday(struct timeval* restrict tp, void *restrict tzp);
+		localtime, mktime, ctime, strftime把上面得到的时间转为人可读的时间和日期
