@@ -141,3 +141,29 @@
 		time_t time(time_t *calptr);
 		int gettimeofday(struct timeval* restrict tp, void *restrict tzp);
 		localtime, mktime, ctime, strftime把上面得到的时间转为人可读的时间和日期
+7 进程环境
+	7.2 main函数
+	7.3 进程终止
+		8种方式使进程终止[5种正常终止，3种异常终止]
+		_exit和_Exit立即进入内核，exit则先执行一些清理处理（包括调用执行各终止处理程序，关闭所有标准I/O流等），然后进入内核
+	7.4 命令行参数
+	7.5 环境表
+		每个程序都会接受到一张环境表
+	7.6 C程序的存储空间布局
+		C程序一直由下面几部分组成：
+			正文段
+			初始化数据段
+			非初始化数据段
+			桟
+			堆
+	7.7 共享库
+	7.8 存储器分配
+	7.9 环境变量
+		char* getenv(const char* name);
+		int putenv(char* str);
+		int setenv(const char* name, const char* value, int rewrite);
+		int unsetenv(const char* name);
+	7.10 setjmp && longjmp
+		int setjmp(jmp_buf env);
+		void longjmp(jmp_buf env, int val)
+	7.11 getrlimit && setrlimit
