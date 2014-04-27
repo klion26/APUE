@@ -167,3 +167,23 @@
 		int setjmp(jmp_buf env);
 		void longjmp(jmp_buf env, int val)
 	7.11 getrlimit && setrlimit
+8 进程控制
+	8.2 近臣标识符
+	8.3 fork函数
+	8.4 vfork函数
+	8.5 exit函数
+	8.6 wait && waitpid
+		2次fork避免僵死进程
+	8.7 waitid函数
+	8.8 wait3 && wait4
+	8.9 竞争条件
+	8.10 exec函数
+	8.11 更改用户ID和组ID
+	8.12 解释器文件
+	8.13 system函数
+		不要再一个设置用户ID程序中调用system，这是一个安全性方面的漏洞
+	8.14 进程会计(process accounting)
+		会计记录对应于进程而不是程序,记录顺序与进程终止顺序一致
+	8.15 用于标识
+		char* getlogin(void);
+	8.16 进程时间
