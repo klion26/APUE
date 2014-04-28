@@ -187,3 +187,21 @@
 	8.15 用于标识
 		char* getlogin(void);
 	8.16 进程时间
+9 进程关系
+	9.2 终端登陆
+	9.3 网络登陆
+	9.4 进程组
+		pid_t getpgrp(void);
+	9.5 会话
+		pid_t setsid(void);
+		pid_t getsid(pid_t pid); 返回会话首进程的进程组ID
+	9.6 终端控制
+	9.7 tcgetpgrp, tcsetpgrp, tcgetsid
+		pid_t tcgetpgrp(int filedes); 成功则返回前台进程组ID
+		int tcsetpgrp(int filedes, pid_t pgrpid);
+	9.8 作业控制
+		只有前台作业接受终端输入，如果后台作业企图接受终端输入，则会Stopped，直到变成前台作业。
+		后台作业输出到控制终端，是可以允许或禁止的[stty命令]
+	9.9 shell执行程序
+	9.10 孤儿进程组
+	9.11 FreeBSD实现
