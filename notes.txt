@@ -205,3 +205,44 @@
 	9.9 shell执行程序
 	9.10 孤儿进程组
 	9.11 FreeBSD实现
+10 信号
+	信号是软件中断
+	10.2 信号概念
+		p236-p240 有大部分信号及其详细说明
+	10.3 signal函数
+		void (*signal(int signo, void (*func)(int)))(int);
+		因为signal的语义与实现有关，所以最好使用sigaction函数代替signal函数
+		"kill -USR1 pid" 向pid所对应的进程发送SIGUSR1
+	10.4 不可靠的信号
+	10.5 中断的系统调用
+	10.6 可重入函数
+		p246,表10-3信号处理程序可以调用的可重入函数
+	10.7 SIGCLD语义
+		SIGCLD和SIGCHLD不同，POSIX.1采用SIGCHLD
+	10.8 可靠信号术语和语义
+		当引发信号的事件发生时，为进程产生一个信号
+	10.9 kill和raise函数
+	10.10 alarm和pause函数
+	10.11 信号集
+		int sigemptyset(sigset_t *set)
+		int sigfillset(sigset_t *set)
+		int sigaddset(sigset_t *set, int signo);
+		int sigdelset(sigset_t *set, int signo);
+		int sigismember(const sigset_t *set, int signo);
+	10.12 sigprocmask函数
+		int sigprocmask(int how, const sigset_t *restrict set, sigset_t *restrict oset);  检测或更改其信号屏蔽字
+	10.13 sigpending函数
+	10.14 sigaction函数
+		int sigaction(int signo, const struct sigaction *restrict act, struct sigaction *restrict oact);
+	10.15 sigsetjmp 和 siglongjmp函数
+		longjmp有可能导致屏蔽信号[在信号处理程序中]，信号处理程序中进行非局部转移时应当使用sigsetjmp和siglongjmp函数
+	10.16 sigsuspend函数
+	10.17 abort函数
+	10.18 system函数
+		实现system函数，用信号
+	10.19 sleep函数
+		POSIX.1 sleep函数的实现
+	10.20 作业控制信号
+	10.21 其他特征
+		信号名字
+		信号映射
