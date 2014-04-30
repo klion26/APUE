@@ -146,6 +146,7 @@
 	7.3 进程终止
 		8种方式使进程终止[5种正常终止，3种异常终止]
 		_exit和_Exit立即进入内核，exit则先执行一些清理处理（包括调用执行各终止处理程序，关闭所有标准I/O流等），然后进入内核
+		atexit函数，注册一个进程退出时执行的函数
 	7.4 命令行参数
 	7.5 环境表
 		每个程序都会接受到一张环境表
@@ -246,3 +247,32 @@
 	10.21 其他特征
 		信号名字
 		信号映射
+11 线程
+	11.2 线程概念
+	11.3 线程标识
+	11.4 线程创建
+		int pthread_creat(pthread_t *restrict tidp, const pthread_attr_t *restrict attr, void *(*start_rtn)(void *), void *restrict arg);
+	11.5 线程终止
+		进程中的任一线程调用了exit, _Exit或者_exit，那么整个进程就会终止。
+		void pthread_exit(void *rval_ptr); //rval_ptr可以通过pthread_join函数访问到
+		int pthread_cancel(pthread_t tid);
+		线程清理函数void pthread_cleanup_push(void (*rtn)(void*), void *art)
+		void thread_clean_pop(int execute)和进程清理函数atexit类似
+		如果线程是通过从它的启动例程中返回而终止的话，那么它的清理处理程序就不会被调用[程序11-4中thread 1的清理函数没有被调用]
+	11.6 线程同步
+		互斥量
+			pthread_mutex_lock()
+			pthread_mutex_unlock()
+		避免死锁
+		读写锁
+			pthread_rwlock_init
+			pthread_rwlock_destory
+			pthread_rwlock_rdlock
+			pthread_rwlock_wrlock
+			pthread_rwlock_unlock
+			非常适合对数据结构读的次数远大于写的情况[可以有多个线程拥有读锁]
+		条件变量
+			pthread_cond_wait()
+			pthread_cond_timedwait()
+			pthread_cond_signal()通知条件变量已满足
+			pthread_cond_broadcast()广播条件变量已满足
