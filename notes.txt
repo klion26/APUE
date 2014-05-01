@@ -276,3 +276,31 @@
 			pthread_cond_timedwait()
 			pthread_cond_signal()通知条件变量已满足
 			pthread_cond_broadcast()广播条件变量已满足
+12 线程控制
+	12.2 线程限制
+	12.3 线程属性
+		int pthread_attr_init(pthread_attr_t *attr);
+		int pthread_attr_destroy(pthread_attr_t *attr);
+	12.4 同步属性
+		int pthread_mutexattr_init();
+		int pthread_mutexattr_destroy();
+		进程共享属性，锁类型属性
+	12.5 重入
+		线程安全：如果一个函数在同一时刻可以被多个线程安全地调用。
+		线程安全也并不代表信号处理程序是可重入的
+	12.6 线程私有数据
+		一：有时候需要维护基于每个线程的数据
+		二：它提供了让基于进程的接口适应多线程环境的机制
+		int pthread_key_create();
+		int pthread_key_delete();
+		void* pthread_getspecific(pthread_key_t key);
+		int pthread_setspecific(pthread_key_t key, const void* value);
+		int pthread_once(pthread_once_t *initflag, void (*initfn)(void));
+	12.7 取消选项
+		int pthread_setcancelstate(int state, int *oldstate);
+		pthread_cancel调用并不等待线程终止，在默认情况下，线程在取消请求发出以后还是继续运行，直到线程到达某个取消点。可以调用pthread_testcancel在程序中自己添加取消点
+	12.8 线程和信号
+		每个线程都有自己的信号屏蔽字，但是信号的处理是进程中所有线程共享的
+	12.9 线程和fork
+	12.10 线程和IO
+		pread&&pwrite使read和write成为原子操作
