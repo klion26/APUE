@@ -334,3 +334,46 @@
 			4. 若一守护进程有一配置文件，那么当该守护进程启动时，它读该文件,但此后一般就不会再查看它。
 	13.7 客户进程-服务器进程模型
 		守护进程常常用作服务器进程
+14 高级I/O
+	14.2 非阻塞I/O
+		非阻塞I/O使我们可以调用open，read和write这样的I/O操作，并使这些操作不会永远阻塞,如果操作不能完成，立即返回出错信息
+		给定的描述符有两种方法对其指定非阻塞I/O：
+		1. 如果调用open获得描述符，则可指定O_NONBLOCK标志
+		2. 对于已经打开的一个描述符，则可调用fcntl，由该函数打开O_NONBLOCK文件状态标志
+	14.3 记录锁
+		解决多进程同时编辑文件
+		对于有些应用程序（例如数据库），进程有时需要确保它正在单独写一个文件。为了向进程提供这种功能，商用UNIX系统提供流记录锁机制
+		记录锁的功能是：当一个进程正在读或修改文件的某个部分时，它可以阻止其他进程修改同一文件区
+		fcntl记录锁
+		在文件尾端加锁时注意SEEK_END的变化
+	14.4 STREAMS
+		流在用户进程和设备驱动程序之间提供了一条全双工通路。
+		所有STREAMS设备都是字符特殊文件
+		STREAMS的所有输入和输出都基于消息
+		在我们使用的函数(read, write, getmsg, putmsg, getpmsg, putpmsg)中，只涉及三种消息类型：
+			M_DATA（I/O的用户数据）
+			M_PROTO（协议控制消息）
+			M_PCPROTO（高优先级协议控制消息）
+			int putmsg(int filedes, const struct strbuf *ctlptr, const struct strbuf *dataptr, int flag);
+			int putpmsg(int filedes, const struct strbuf *ctlptr, const struct strbuf *dataptr, int band, int flag);
+		Linux不支持STREAMS
+	14.5 I/O多路转换
+		处理从多个文件描述符同时读数据（阻塞模式），方式其中一个一直阻塞，而其他的则有很多数据得不到处理
+		I/O多路转换：先构造一张有关描述符的列表，然后调用一个函数，直到这些描述符中的一个已准备好进行I/O时，才返回。返回时，告诉进程哪些描述符已准备好可以进行I/O
+		poll，pselect和select这三个函数使我们能够执行I/O多路转换。
+		int select(int maxfdp1, fd_set *restrict readfds, fd_set *restrict writefds, fd_set *restrict exceptfds, struct timeval *restrict tvptr);
+		int poll(struct pollfd fdarray[], nfds_t nfds, int timeout);
+	14.6 异步I/O
+		在系统V派生的系统中，异步I/O只对STREAMS设备和STREAMS管道起作用。在BSD派生的系统中，异步I/O只对终端和网络其作用
+		异步I/O的一个限制是每个进程只有一个信号。如果要对几个描述符进行异步I/O，那么在进程接收到信号时并不知道这一信号对应于哪一个描述符。
+	14.7 readv && writev
+		readv和writev函数用于在一次函数调用中读，写多个非连续缓冲区。
+		ssize_t readv(int filedes, const struct iovec *iov, int iovcnt);
+		ssize_t writev(int filedes, const struct iovec *iov, int iovcnt);
+	14.8 readn && writen
+		读写指定的n字节数据
+		ssize_t readn(int filedes, void* buf, size_t nbytes);
+		ssize_t writen(int filedes, void* buf, size_t nbytes);
+	14.9 存储映射I/O
+		存储映射I/O使一个磁盘文件与存储空间中的一个缓冲区相映射。
+		void* mmap(void* addr, size_t len, int prot, int flag, int filedes, off_t off);
