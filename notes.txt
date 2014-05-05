@@ -411,3 +411,43 @@
 		int shmget(key_t key, size_t size, int flag)
 		共享存储可由不相关的进程使用
 	15.10 客户进程-服务器进程属性
+16 网络IPC：套接字
+	16.2 套接字描述
+		int socket(int domain, int type, int protocol);
+	16.3 寻址
+		字节序：大端和小端字节序
+			uint32_t htonl(uint32_t hostint32);
+			uint16_t htons(uint16_t hostint16);
+			uint32_t ntohl(uint32_t netint32);
+			uint16_t ntohs(uint16_t netint16);
+		地址格式
+			为使不同格式地址能够被传入到套接字函数，地址被强制转换成通用的地址结构sockaddr
+		地址查询
+			struct hostent* gethostent(void);
+			void sethostent(int stayopen);
+			void endhostent(void);
+			struct netent* getnetbyaddr(uint32_t net, int type);
+			struct netent* getnetbyname(const char* name);
+			struct netent* getnetent(void);
+			void setnetent(int stayopen);
+			void endnetent(void);
+			struct protoent* getprotobyname(const char* name);
+			struct protoent* getprotobynumber(int proto);
+			struct protoent* getprotoent(void);
+			void setprotoent(int stayopen);
+			void endprotoent(void);
+		将套接字与地址绑定
+			int bind(int sockfd, const struct sockaddr *addr, socklen_t len);
+	16.4 建立连接
+		int connect(int sockfd, const struct sockaddr* addr, socklen_t len)
+		int listen(int sockfd, int backlog);
+		int accept(int sockfd, struct sockaddr *restrict addr, socklen_t *restrict len);
+	16.5 数据传输
+		ssize_t send(int sockfd, const void* buf, size_t nbytes, int flags)
+		ssize_t sendto(int sockfd, const void* buf, size_t nbytes, int flags, const struct sockaddr *destaddr, socklen_t destlen);
+		ssize_t sendmsg(int sockfd, const struct msghdr *msg, int flags)
+	16.6 套接字选项
+		设置选项和查询选项
+	16.7 带外数据
+		TCP支持带外数据，但UDP不支持。TCP将带外数据称为“紧急”数据。
+	16.8 非阻塞和异步I/O
