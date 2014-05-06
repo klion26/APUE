@@ -459,3 +459,29 @@
 		int socketpair(int domain, int type, int protocol, int sockfd[2]);
 	17.4 传送文件描述符
 	17.5 open服务器版本1
+18 终端I/O
+	18.2 综述
+		两种工作模式：规范模式输入处理和非规范模式输入处理
+		终端I/O函数摘要  P511 表18-5
+	18.3 特殊输入字符
+	18.4 获得和设置终端属性
+		int tcgetattr(int filedes, struct termios *termptr);
+		int tcsetattr(int filedes, int opt, const struct termios *termptr);
+	18.5 终端选项标志
+	18.6 stty命令
+		在命令行中可以用stty进行终端属性的查找和更改
+	18.7 波特率函数
+		speed_t cfgetispeed(const struct termios *termptr);
+		speed_t cfgetospeed(const struct termios *termptr);
+		int cfsetispeed(struct termios* termptr, speed_t speed);
+		int cfsetospeed(struct termios* termptr, speed_t speed);
+	18.8 行控制函数
+	18.9 终端标识
+		char* ctermid(char* ptr);
+		int isatty(int filedes);
+		char* ttyname(int filedes);
+	18.10 规范模式
+	18.11 非规范模式
+	18.12 终端的窗口大小
+	18.13 termcap, terminfo && curses
+	18.10 规范模式
