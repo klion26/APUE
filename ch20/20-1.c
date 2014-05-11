@@ -375,7 +375,8 @@ _db_dodelete(DB *db)
 
 	//printf("datbuf:::%s\n", db->datbuf);
 	//把数据内存和 key 都替换成 SPACE 表示删除
-	//这里存在一个疑问，db->datbuf 没有设置?
+	//这里存在一个疑问，db->datbuf 没有设置? 这里不需要设置，db->datbuf值是一个内存块
+	//我们接下来会把这个内存块写到文件中去
 	for (ptr = db->datbuf, i = 0; i < db->datlen - 1; i++)
 		*ptr++ = SPACE;
 	*ptr = 0;	
